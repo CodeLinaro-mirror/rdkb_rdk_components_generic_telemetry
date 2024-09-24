@@ -81,8 +81,6 @@ typedef struct _callbackhandler {
     profilememCallBack pmCallBack;
     dataModelReportOnDemandCallBack reportonDemand;
     xconfPrivacyModesDoNotShareCallBack privacyModesDoNotShare;
-    t2PrivacyModesCallBack privacymode;
-    t2SavedPrivacyModesCallBack privacymodeSaved;
     ReportProfilesDeleteDNDCallBack mprofilesdeleteDoNotShare;
 } callBackHandlers;
 

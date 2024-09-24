@@ -56,6 +56,10 @@
 #include "curlinterface.h"
 #endif
 
+#if defined(PRIVACYMODES_CONTROL)
+#include "rdkservices_privacyutils.h"
+#endif
+
 //Including Webconfig Framework For Telemetry 2.0 As part of RDKB-28897
 #define SUBDOC_COUNT    1
 #define SUBDOC_NAME "telemetry"
@@ -478,8 +482,6 @@ T2ERROR initReportProfiles()
                     interfaceListForBus->pmCallBack = profilemem_usage;
                     interfaceListForBus->reportonDemand = reportOnDemand;
                     interfaceListForBus->privacyModesDoNotShare = privacymode_do_not_share;
-		    interfaceListForBus->privacymode = setPrivacyMode;
-                    interfaceListForBus->privacymodeSaved = getPrivacyMode;
                     interfaceListForBus->mprofilesdeleteDoNotShare =  deleteAllReportProfiles;
                     regDEforProfileDataModel(interfaceListForBus);
 

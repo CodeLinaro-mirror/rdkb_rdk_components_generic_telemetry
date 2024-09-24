@@ -38,3 +38,9 @@ libccspinterface_la_CPPFLAGS = -fPIC $(CPPFLAGS) -I${PKG_CONFIG_SYSROOT_DIR}$(in
                                 -I${top_srcdir}/source/t2ssp \
                                 -I${top_srcdir}/source/bulkdata \
                                 -I${top_srcdir}/source/reportgen
+
+if IS_PRIVACYCONTROL_ENABLED
+libccspinterface_la_CFLAGS += $(PRIVACYCONTROL_FLAG)
+libccspinterface_la_CPPFLAGS +=  -I${top_srcdir}/source/privacycontrol
+libccspinterface_la_DEPENDENCIES = ${top_builddir}/source/privacycontrol/libt2thunder_privacycontrol.la
+endif

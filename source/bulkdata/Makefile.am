@@ -51,3 +51,9 @@ libbulkdata_la_DEPENDENCIES = ${top_builddir}/source/utils/libt2utils.la ${top_b
 if IS_LIBRDKCERTSEL_ENABLED
 libbulkdata_la_CFLAGS = $(LIBRDKCERTSEL_FLAG)
 endif
+
+if IS_PRIVACYCONTROL_ENABLED
+libbulkdata_la_CFLAGS = $(PRIVACYCONTROL_FLAG)
+libbulkdata_la_CPPFLAGS +=  -I${top_srcdir}/source/privacycontrol
+libbulkdata_la_DEPENDENCIES += ${top_builddir}/source/privacycontrol/libt2thunder_privacycontrol.la
+endif

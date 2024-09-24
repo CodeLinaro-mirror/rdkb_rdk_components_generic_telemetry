@@ -127,6 +127,28 @@ AC_ARG_ENABLE([libsyswrapper],
 AM_CONDITIONAL([IS_LIBSYSWRAPPER_ENABLED], [test x$IS_LIBSYSWRAPPER_ENABLED = xtrue])
 AC_SUBST(LIBSYSWRAPPER_FLAG)
 
+#privacy control flag
+IS_PRIVACYCONTROL_ENABLED=false
+AC_ARG_ENABLE([privacycontrol],
+          AS_HELP_STRING([--enable-privacycontrol],[enables privacy control functions (default is no)]),
+          [
+            case "${enableval}" in
+            yes) IS_PRIVACYCONTROL_ENABLED=true
+                 PRIVACYCONTROL_FLAG=" -DPRIVACYMODES_CONTROL ";;
+            no)  IS_PRIVACYCONTROL_ENABLED=false ;;
+            *) AC_MSG_ERROR([bad value ${enableval} for --enable-privacycontrol]) ;;
+            esac
+          ],
+          [echo "privacycontrol is disabled"])
+AM_CONDITIONAL([IS_PRIVACYCONTROL_ENABLED], [test x$IS_PRIVACYCONTROL_ENABLED = xtrue])
+AC_SUBST(PRIVACYCONTROL_FLAG)
+
+#privacy control add the CFLAGS to all the files
+if test x$IS_PRIVACYCONTROL_ENABLED = xtrue; then
+    CPPFLAGS="$CPPFLAGS $PRIVACYCONTROL_FLAG"
+    CFLAGS="$CFLAGS $PRIVACYCONTROL_FLAG"
+fi
+
 AC_ARG_ENABLE([mountutils],
         AS_HELP_STRING([--enable-mountutils],[enables mountutils replacement (default is no)]),
         [
@@ -175,6 +197,10 @@ AC_CONFIG_FILES([Makefile
 
 AM_COND_IF([ENABLE_CCSP_SUPPORT], [AC_CONFIG_FILES([source/t2dm/Makefile])])
 AM_COND_IF([ENABLE_CCSP_SUPPORT], [AC_CONFIG_SRCDIR([source/t2dm])])
+
+#privacy control add the source dir and Makefile
+AM_COND_IF([IS_PRIVACYCONTROL_ENABLED], [AC_CONFIG_FILES([source/privacycontrol/Makefile])])
+AM_COND_IF([IS_PRIVACYCONTROL_ENABLED], [AC_CONFIG_SRCDIR([source/privacycontrol])])
 
 AC_SUBST(GTEST_ENABLE_FLAG)
 AC_OUTPUT

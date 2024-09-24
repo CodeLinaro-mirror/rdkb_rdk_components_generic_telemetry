@@ -68,10 +68,8 @@ T2ERROR MsgPackSaveConfig(const char* path, const char *fileName, const char *ms
 
 #define PRIVACYMODE_PATH PERSISTENCE_PATH"/.t2privacymodes"
 
-T2ERROR  setPrivacyMode(char* data);
+T2ERROR getPrivacyModeFromPersistentFolder(char **data);
 
 T2ERROR savePrivacyModeToPersistentFolder(char *data);
-
-void getPrivacyMode(char **privMode);
 
 #endif /* _PERSISTENCE_H_ */

@@ -360,16 +360,6 @@ T2ERROR populateCachedReportList(const char *profileName, Vector *outReportList)
 }
 
 //Privacy mode functions
-T2ERROR setPrivacyMode(char* data)
-{
-    T2Info("Privacy Mode is %s\n", data);
-    if(savePrivacyModeToPersistentFolder(data) != T2ERROR_FAILURE){
-        T2Info("savePrivacyModeToPersistentFolder is successful\n");
-        return T2ERROR_SUCCESS;
-    }
-    return T2ERROR_FAILURE;
-}
-
 T2ERROR savePrivacyModeToPersistentFolder(char *data)
 {
     T2Debug("%s ++in\n", __FUNCTION__);
@@ -413,8 +403,7 @@ T2ERROR savePrivacyModeToPersistentFolder(char *data)
     return T2ERROR_SUCCESS;
 }
 
-void getPrivacyMode(char **privMode)
-{
+T2ERROR getPrivacyModeFromPersistentFolder(char **privMode){
     T2Debug("%s ++in\n", __FUNCTION__);
     FILE *fp = NULL;
     char filePath[256] = {'\0'};
@@ -425,17 +414,21 @@ void getPrivacyMode(char **privMode)
     if(fp == NULL)
     {
         T2Error("Unable to open the file : %s\n", filePath);
-        *privMode = strdup("SHARE");
-	T2Info("privacy mode is %s\n", *privMode);
-        return;
+        return T2ERROR_FAILURE; 
     }
     stat(filePath, &filestat);
     fread(data, sizeof(char), filestat.st_size, fp);
     *privMode = strdup(data);
     if(fclose(fp) != 0){
           T2Error("Unable to close file : %s\n", filePath);
-          return;
+          return T2ERROR_INTERNAL_ERROR;
     }
     T2Debug("%s --out\n", __FUNCTION__);
-    return;
-}
+    return T2ERROR_SUCCESS;
+} 
+
+
+
+
+
+

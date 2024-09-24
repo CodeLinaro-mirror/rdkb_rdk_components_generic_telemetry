@@ -16,7 +16,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ##########################################################################
-SUBDIRS = utils ccspinterface t2parser xconf-client protocol nativeProtocolSimulator reportgen scheduler dcautil commonlib bulkdata interChipHelper
+SUBDIRS = utils 
+
+#add privacymode utils if the flag is enabled
+if IS_PRIVACYCONTROL_ENABLED
+SUBDIRS += privacycontrol
+endif
+
+SUBDIRS += ccspinterface t2parser xconf-client protocol nativeProtocolSimulator reportgen scheduler dcautil commonlib bulkdata interChipHelper
 
 if ENABLE_CCSP_SUPPORT
 SUBDIRS += t2dm
@@ -65,3 +72,9 @@ telemetry2_0_LDADD = ${top_builddir}/source/utils/libt2utils.la ${top_builddir}/
                   ${top_builddir}/source/interChipHelper/libinterChipHelper.la \
                   ${top_builddir}/source/t2parser/libt2parser.la \
                   ${top_builddir}/source/xconf-client/libxconfclient.la
+
+#privacy control include the sub dir if the privicy mode is enabled
+if IS_PRIVACYCONTROL_ENABLED
+telemetry2_0_CPPFLAGS += -I${top_srcdir}/source/privacycontrol/libt2thunder_privacycontrol.la
+telemetry2_0_LDADD += ${top_builddir}/source/privacycontrol/libt2thunder_privacycontrol.la
+endif

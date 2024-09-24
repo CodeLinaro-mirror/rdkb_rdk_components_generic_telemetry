@@ -33,6 +33,10 @@
 #include "t2log_wrapper.h"
 #include "profile.h"
 
+#if defined(PRIVACYMODES_CONTROL)
+#include "rdkservices_privacyutils.h"
+#endif
+
 #define buffLen 1024
 #define maxParamLen 128
 
@@ -53,8 +57,6 @@ static profilememCallBack profilememUsedCallBack;
 static dataModelReportOnDemandCallBack reportOnDemandCallBack;
 static triggerReportOnCondtionCallBack reportOnConditionCallBack;
 static xconfPrivacyModesDoNotShareCallBack privacyModesDoNotShareCallBack;
-static t2PrivacyModesCallBack pmPrivacyModesCallBack;
-static t2SavedPrivacyModesCallBack pmSavedPrivacyModesCallBack;
 static ReportProfilesDeleteDNDCallBack mprofilesDeleteCallBack;
 #if defined(PRIVACYMODES_CONTROL)
 static char* privacyModeVal = NULL;
@@ -480,7 +482,7 @@ rbusError_t t2PropertyDataSetHandler(rbusHandle_t handle, rbusProperty_t prop, r
 	    privacyModeVal = strdup(data);
 	    free(data);
 	    T2Debug("PrivacyMode data is %s\n", privacyModeVal);
-            if(T2ERROR_SUCCESS != pmPrivacyModesCallBack(privacyModeVal))
+            if(T2ERROR_SUCCESS != setPrivacyMode(privacyModeVal))
             {
                   return RBUS_ERROR_INVALID_INPUT;
 	    }
@@ -598,7 +600,7 @@ rbusError_t t2PropertyDataGetHandler(rbusHandle_t handle, rbusProperty_t propert
             rbusValue_SetString(value, privacyModeVal);
 	}else{
             char *data = NULL;
-            (*pmSavedPrivacyModesCallBack)(&data);
+            getPrivacyMode(&data);
             if(data != NULL){
                 T2Debug("Privacy mode fetched  from the persistent folder is %s\n", data);
                 rbusValue_SetString(value, data);
@@ -1029,12 +1031,6 @@ T2ERROR regDEforProfileDataModel(callBackHandlers* cbHandlers) {
     
     if(cbHandlers->privacyModesDoNotShare)
         privacyModesDoNotShareCallBack = cbHandlers->privacyModesDoNotShare;
-
-    if(cbHandlers->privacymode)
-        pmPrivacyModesCallBack = cbHandlers->privacymode;
-
-    if(cbHandlers->privacymodeSaved)
-        pmSavedPrivacyModesCallBack = cbHandlers->privacymodeSaved;
 
     if(cbHandlers->mprofilesdeleteDoNotShare)
         mprofilesDeleteCallBack = cbHandlers->mprofilesdeleteDoNotShare;

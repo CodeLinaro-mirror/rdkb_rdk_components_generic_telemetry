@@ -37,6 +37,11 @@
 #include "dcautil.h"
 #include "t2parser.h"
 #include "rbusInterface.h"
+
+#if defined(PRIVACYMODES_CONTROL)
+#include "rdkservices_privacyutils.h"
+#endif
+
 #define MAX_LEN 256
 
 static bool initialized = false;

@@ -30,6 +30,10 @@
 #include "t2common.h"
 #include "persistence.h"
 
+#if defined (PRIVACYMODES_CONTROL)
+#include "rdkservices_privacyutils.h"
+#endif
+
 #define MT_EVENT_PATTERN   "<event>"
 #define MT_EVENT_PATTERN_LENGTH 7
 #define MT_TR181PARAM_PATTERN   "<message_bus>"

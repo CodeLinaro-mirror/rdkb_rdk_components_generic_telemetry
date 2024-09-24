@@ -36,3 +36,9 @@ libt2parser_la_CPPFLAGS = -fPIC -I${PKG_CONFIG_SYSROOT_DIR}$(includedir)/dbus-1.
 libt2parser_la_DEPENDENCIES = ${top_builddir}/source/ccspinterface/libccspinterface.la ${top_builddir}/source/utils/libt2utils.la
 
 libt2parser_la_LDFLAGS = -lmsgpackc
+
+if IS_PRIVACYCONTROL_ENABLED
+libt2parser_la_CFLAGS = $(PRIVACYCONTROL_FLAG)
+libt2parser_la_CPPFLAGS +=  -I${top_srcdir}/source/privacycontrol
+libt2parser_la_DEPENDENCIES += ${top_builddir}/source/privacycontrol/libt2thunder_privacycontrol.la
+endif
