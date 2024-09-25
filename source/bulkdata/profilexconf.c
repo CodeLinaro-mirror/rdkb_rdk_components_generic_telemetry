@@ -499,18 +499,18 @@ void ProfileXConf_updateMarkerComponentMap()
         T2Error("profile list is not initialized yet, ignoring\n");
         return ;
     }
-    if(!singleProfile)
-    {
-        T2Error("Profile not found in %s\n", __FUNCTION__);
-        return ;
-    }
     int emIndex = 0;
     EventMarker *eMarker = NULL;
     pthread_mutex_lock(&plMutex);
-    for(;emIndex < Vector_Size(singleProfile->eMarkerList); emIndex++)
+    if(singleProfile)
     {
-        eMarker = (EventMarker *)Vector_At(singleProfile->eMarkerList, emIndex);
-        addT2EventMarker(eMarker->markerName, eMarker->compName, singleProfile->name, eMarker->skipFreq);
+        for(;emIndex < Vector_Size(singleProfile->eMarkerList); emIndex++)
+        {
+            eMarker = (EventMarker *)Vector_At(singleProfile->eMarkerList, emIndex);
+            addT2EventMarker(eMarker->markerName, eMarker->compName, singleProfile->name, eMarker->skipFreq);
+        }
+    }else{
+	T2Error("Profile not found in %s\n", __FUNCTION__);
     }
     pthread_mutex_unlock(&plMutex);
     T2Debug("%s --out\n", __FUNCTION__);
