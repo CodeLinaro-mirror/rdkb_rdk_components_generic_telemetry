@@ -1120,15 +1120,20 @@ void reportEventHandler(
 {
     (void)handle;
     T2Debug("in Function %s \n", __FUNCTION__);
-    T2Debug("Called the callback for the prop");
+    T2Debug("Call the callback for the prop %s\n", event->name ? event->name : "NONAME");
     const char* eventName = event->name;
+
     rbusValue_t newValue = rbusObject_GetValue(event->data, "value");
-    const char* eventValue = rbusValue_ToString(newValue,NULL,0);
-    eventCallBack((char*) strdup(eventName),(char*) strdup(eventValue) );
+    const char* eventValue = NULL;
+    if(newValue)
+        eventValue = rbusValue_ToString(newValue,NULL,0);
+
+    eventCallBack(eventName? (char*) strdup(eventName) : NULL, eventValue ? (char*) strdup(eventValue) : (char*) strdup("NOVALUE"));
     if(eventValue != NULL){
-       free((char*)eventValue);
-       eventValue = NULL;
+        free((char*)eventValue);
+        eventValue = NULL;
     }
+    T2Debug("exit Function %s \n", __FUNCTION__);
 }
 
 void triggerCondtionReceiveHandler(
