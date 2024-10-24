@@ -236,7 +236,12 @@ static T2ERROR saveDcaGrepResults() {
     }
 
     if(NULL != dcaResultObj) {
-        T2Debug("ATOM Data from dca : \n %s \n", cJSON_PrintUnformatted(dcaResultObj));
+        char *temp = cJSON_PrintUnformatted(dcaResultObj);
+        if(temp)
+        {
+            T2Debug("ATOM Data from dca : \n %s \n", temp);
+            free(temp);
+        }
     }else {
         dcaResultObj = cJSON_CreateObject();
         if(NULL != dcaResultObj)
@@ -250,7 +255,12 @@ static T2ERROR saveDcaGrepResults() {
     FILE* dcaLogGrepResult = NULL;
     dcaLogGrepResult = fopen(TELEMTERY_LOG_GREP_RESULT, "w+");
     if(dcaLogGrepResult != NULL) {
-        fprintf(dcaLogGrepResult, "%s", cJSON_PrintUnformatted(dcaResultObj));
+        char *temp = cJSON_PrintUnformatted(dcaResultObj);
+        if(temp)
+        {
+            fprintf(dcaLogGrepResult, "%s", temp);
+            free(temp);
+        }
         usleep(LOOP_SLEEP);
         fclose(dcaLogGrepResult);
         T2Debug("Saved grepsult file %s for interchip \n", TELEMTERY_LOG_GREP_RESULT);

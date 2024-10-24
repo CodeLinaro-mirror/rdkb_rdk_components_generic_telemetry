@@ -101,7 +101,12 @@ static T2ERROR getInterChipDCAResult(char* profileName, cJSON** pdcaResultObj, b
                 fread(line, sizeof(char), filestat.st_size, grepResultFp);
                 line[filestat.st_size] = '\0';
                 *pdcaResultObj = cJSON_Parse(line);
-                T2Debug("DCA result from ATOM is : \n %s \n", cJSON_PrintUnformatted(*pdcaResultObj));
+                char *temp = cJSON_PrintUnformatted(*pdcaResultObj);
+                if(temp)
+                {
+                    T2Debug("DCA result from ATOM is : \n %s \n", temp);
+                    free(temp);
+                }
                 free(line);
             } else {
                 T2Info("Unable to allocate memory to read data from %s \n", TELEMTERY_LOG_GREP_RESULT );
